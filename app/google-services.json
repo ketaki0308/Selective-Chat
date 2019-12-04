@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "698768632199",
+    "firebase_url": "https://selective-chat-93416.firebaseio.com",
+    "project_id": "selective-chat-93416",
+    "storage_bucket": "selective-chat-93416.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698768632199:android:cf453798d7494f58dbcb22",
+        "android_client_info": {
+          "package_name": "com.gotenna.selectivechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "698768632199-kacg2cni1ahec81mvofb9ltr9bedh8qn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZs8CFun55hFuw5l6KkEe8qRxJf-fsEP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698768632199-kacg2cni1ahec81mvofb9ltr9bedh8qn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
