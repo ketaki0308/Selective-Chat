@@ -1,7 +1,6 @@
 package com.gotenna.selectivechat
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -11,7 +10,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -22,10 +20,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
+    private val userMutableList = mutableListOf<String>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
 
         setUI()
 
@@ -36,8 +36,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         val database = FirebaseDatabase.getInstance().reference
 
-        val userMutableList = mutableListOf<String>()
-        userMutableList.add(0,"Select User")
+        userMutableList.add(0, "Select")
 
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -56,20 +55,15 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
 
     private fun setUI() {
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
 
         val adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item, getUserList()
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        user_spinner.adapter = adapter
-        user_spinner.setSelection(0)
-        user_spinner.onItemSelectedListener = this
+        userSpinner.adapter = adapter
+        userSpinner.setSelection(0)
+        userSpinner.onItemSelectedListener = this
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -94,8 +88,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        with (sharedPref.edit()) {
-            putString("user", getUserList()[p2])
+        with(sharedPref.edit()) {
+            putString("user", userMutableList[p2])
             commit()
         }
 
@@ -113,5 +107,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 val token = task.result?.token
                 Log.d("TAG", token)
             })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        userMutableList.clear()
     }
 }
