@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "698768632199-2phqhoog3o77lac6iae8ltmcp576pu2t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gotenna.selectivechat",
+            "certificate_hash": "b01c7b88cde2c9d0ef6de3ebf341f1f0e2db7fe9"
+          }
+        },
+        {
           "client_id": "698768632199-kacg2cni1ahec81mvofb9ltr9bedh8qn.apps.googleusercontent.com",
           "client_type": 3
         }

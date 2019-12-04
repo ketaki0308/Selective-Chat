@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    android:oneshot="false"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/sending_animation_1"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/sending_animation_2"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/sending_animation_3"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/sending_animation_4"
+        android:duration="150"/>
+</animation-list>

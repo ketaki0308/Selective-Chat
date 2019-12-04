@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/messageStatusView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/imageStatusLayout"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="24dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/chat_delivered_icon"
+            tools:visibility="gone"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="18dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/chat_delivered_icon"
+            tools:visibility="gone"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/chat_delivery_failed_icon"
+            tools:visibility="gone"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/chat_delivered_icon"
+            tools:visibility="gone"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/chat_delivered_icon"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/progressImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_circle"
+        android:contentDescription="@string/image_description"
+        android:src="@drawable/send_animation"
+        tools:visibility="gone"/>
+
+</RelativeLayout>

@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="transparent">#00000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="background_white">#FAFAFA</color>
+    <color name="white_pressed">#F1F1F1</color>
+    <color name="black">#000000</color>
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="black_38">#60000000</color>
+    <color name="dark_gray">#666666</color>
+    <color name="light_gray">#9F9F9F</color>
+    <color name="blue">#213CBF</color>
+    <color name="blue_gray">#6d80de</color>
+    <color name="orange">#FF6E2C</color>
+    <color name="red">#EF4B22</color>
+    <color name="pure_red">#FF0000</color>
+    <color name="red_gray">#DE1E04</color>
+    <color name="green">#7ACC86</color>
+    <color name="button_background">#80666666</color>
+    <color name="gray_divider">#8F8F8F</color>
+    <color name="progress_bar_blue">#4A90E2</color>
+    <color name="mapViewPortBackgroundColor">#8A000000</color>
+    <color name="mapBoxOfflineRegionOverlayColor">#00FF00</color>
+    <color name="perimeterColor">#AFEF4B22</color>
+    <color name="map_bar_gray">#3E3E3E</color>
+    <color name="transparent_map_bar_gray">#F03E3E3E</color>
+    <color name="download_button_black">#242424</color>
+    <color name="disabled_gray">#525252</color>
+
+    <!-- Color Picker Colors -->
+    <color name="color_picker_red">#EF4B22</color>
+    <color name="color_picker_magenta">#FF00FF</color>
+    <color name="color_picker_yellow">#ECCB6D</color>
+    <color name="color_picker_green">#008200</color>
+    <color name="color_picker_blue">#4A90E2</color>
+
+    <!-- Dark re-skin colors-->
+    <color name="nav_background">#eeeeee</color>
+    <color name="off_black">#212628</color>
+    <color name="dark_grey">#2D3234</color>
+    <color name="grey">#8F8F8F</color>
+    <color name="light_grey">#E6E6E6</color>
+    <color name="light_blue">#4A90E2</color>
+    <color name="onboarding_blue">#3a78ef</color>
+    <color name="onboarding_red">#ff3b30</color>
+    <color name="dark_gray_divider">#3a4042</color>
+
+    <!--RSSI Scanner-->
+    <color name="control_channel">#ffff00</color>
+    <color name="data_channel">#ff00ff</color>
+    <color name="control_data_channel">#ff00ffff</color>
+    <color name="peak">#ffff0000</color>
+    <color name="scan">#ff006CC5</color>
 </resources>
