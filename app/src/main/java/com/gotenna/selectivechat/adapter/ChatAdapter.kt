@@ -16,7 +16,6 @@ import com.gotenna.selectivechat.userName
  */
 class ChatAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-//    private val userName:String? = com.gotenna.selectivechat.userName
     private val messageList= mutableListOf<Message>()
 
     private val TYPE_OTHERS = 0
@@ -74,7 +73,12 @@ class ChatAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun addNewMessage(message: Message){
        messageList.add(message)
-//       notifyItemInserted(messageList.size-1)
+        notifyDataSetChanged()
+    }
+
+    fun updateMessageList(messages:List<Message>){
+        messageList.clear()
+        messageList.addAll(messages)
         notifyDataSetChanged()
     }
 }

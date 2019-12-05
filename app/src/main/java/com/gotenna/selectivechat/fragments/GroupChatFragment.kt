@@ -14,6 +14,7 @@ import com.gotenna.selectivechat.adapter.ChatAdapter
 import com.gotenna.selectivechat.model.ChatGroup
 import com.gotenna.selectivechat.model.Member
 import com.gotenna.selectivechat.model.Message
+import com.gotenna.selectivechat.userName
 import kotlinx.android.synthetic.main.chat_fragment.*
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
@@ -44,15 +45,47 @@ class GroupChatFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity,RecyclerView.VERTICAL,false)
             adapter = ChatAdapter()
         }
-        tv_group_name.text = arguments?.getParcelable<ChatGroup>(KEY_CHAT_GROUP)?.name
+        val groupName = arguments?.getParcelable<ChatGroup>(KEY_CHAT_GROUP)?.name
+        tv_group_name.text = groupName
         arguments?.getParcelable<ChatGroup>(KEY_CHAT_GROUP)?.members?.joinToString(separator = ",",transform = {
             it.name as CharSequence
         })?.let {
             tv_member_name.text = it
         }
 
-        FirebaseDatabase.getInstance().reference.child("Hack_day").child("messages").let {datebase->
-            datebase.addChildEventListener(object : ChildEventListener {
+        val database = FirebaseDatabase.getInstance().reference.child(groupName?:"Hack_day").child("messages")
+
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val messageList = mutableListOf<Message>()
+                for(message in p0.children){
+                    messageList.add(message.getValue(Message::class.java) as Message)
+                }
+                (rv_chat.adapter as? ChatAdapter?)?.let{chatAdapter ->
+                    chatAdapter.updateMessageList(messageList)
+                }
+                scrollToBottom()
+//                addFirebaseDataChangeListener(database)
+            }
+        })
+
+        iv_send.setOnClickListener {
+            database.child(System.currentTimeMillis().toString()).setValue(Message().apply {
+                text = et_message.text.toString()
+                sender = userName
+                timeStamp = System.currentTimeMillis().toString()
+            })
+            et_message.text.clear()
+            scrollToBottom()
+        }
+    }
+
+    private fun addFirebaseDataChangeListener(database: DatabaseReference) {
+        database.let {
+            it.addChildEventListener(object : ChildEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                 }
 
@@ -63,27 +96,18 @@ class GroupChatFragment : Fragment() {
                 }
 
                 override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                    val message =  p0.getValue(Message::class.java)
-                    (rv_chat.adapter as? ChatAdapter?)?.let{chatAdapter ->
-                        message?.let {message->
+                    val message = p0.getValue(Message::class.java)
+                    (rv_chat.adapter as? ChatAdapter?)?.let { chatAdapter ->
+                        message?.let { message ->
                             chatAdapter.addNewMessage(message)
                         }
                     }
-//                    scrollToBottom()
+                    scrollToBottom()
                 }
+
                 override fun onChildRemoved(p0: DataSnapshot) {
                 }
             })
-
-            iv_send.setOnClickListener {
-                datebase.child(System.currentTimeMillis().toString()).setValue(Message().apply {
-                    text = et_message.text.toString()
-                    sender = "Chuliang"
-                    timeStamp = System.currentTimeMillis().toString()
-                })
-                et_message.text.clear()
-                scrollToBottom()
-            }
         }
     }
 
