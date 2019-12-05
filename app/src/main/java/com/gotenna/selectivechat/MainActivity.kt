@@ -16,22 +16,20 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.iid.FirebaseInstanceId
-import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class MainActivity : AppCompatActivity() {
 
     private val userMutableList = mutableListOf<String>()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setUI()
+        setUpFirebase()
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fl_fragment, GroupChatFragment())
+            replace(R.id.frameLayout, GroupChatFragment())
             commit()
-//            setUI()
-//            setUpFirebase()
         }
     }
 
@@ -63,41 +61,29 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             this,
             android.R.layout.simple_spinner_item, getUserList()
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 //        userSpinner.adapter = adapter
 //        userSpinner.setSelection(0)
 //        userSpinner.onItemSelectedListener = this
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+       if(getPreferences(Context.MODE_PRIVATE).getString("user","").isNullOrEmpty()) {
+           supportFragmentManager.beginTransaction().apply {
+               replace(R.id.frameLayout, LoginFragment())
+               commit()
+           }
+       }  else {
+
+           //TODO : Go To Chat
+           supportFragmentManager.beginTransaction().apply {
+               replace(R.id.frameLayout, LoginFragment())
+               commit()
+           }
+       }
+        setUpFirebase()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-        //user_spinner.prompt = "Please select user from list"
-    }
-
-    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            putString("user", userMutableList[p2])
-            commit()
-        }
-
-        //go to your chat fragment
-    }
 
     fun setUpFirebase() {
         FirebaseInstanceId.getInstance().instanceId
@@ -110,10 +96,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 val token = task.result?.token
                 Log.d("TAG", token)
             })
+
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        userMutableList.clear()
-    }
+override fun onDestroy() {
+    super.onDestroy()
+    userMutableList.clear()
+}
 }
