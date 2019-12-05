@@ -44,30 +44,12 @@ class GroupChatFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity,RecyclerView.VERTICAL,false)
             adapter = ChatAdapter()
         }
-        tv_group_name.text = "Hack Day Demo"
-        var membersBuilder = StringBuilder()
-        val chatGroupList = mutableListOf<ChatGroup>()
-        FirebaseDatabase.getInstance().reference.child("Hack_day").child("members").addChildEventListener(object : ChildEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
-
-            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-            }
-
-            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-            }
-
-            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                    val member = p0.getValue(Member::class.java)
-                member?.name?.let {
-                    membersBuilder.append("${it},")
-                    tv_member_name.text = membersBuilder.substring(0,membersBuilder.length-1).toString()
-                }
-            }
-
-            override fun onChildRemoved(p0: DataSnapshot) {
-            }
-        })
+        tv_group_name.text = arguments?.getParcelable<ChatGroup>(KEY_CHAT_GROUP)?.name
+        arguments?.getParcelable<ChatGroup>(KEY_CHAT_GROUP)?.members?.joinToString(separator = ",",transform = {
+            it.name as CharSequence
+        })?.let {
+            tv_member_name.text = it
+        }
 
         FirebaseDatabase.getInstance().reference.child("Hack_day").child("messages").let {datebase->
             datebase.addChildEventListener(object : ChildEventListener {
@@ -87,7 +69,7 @@ class GroupChatFragment : Fragment() {
                             chatAdapter.addNewMessage(message)
                         }
                     }
-                    scrollToBottom()
+//                    scrollToBottom()
                 }
                 override fun onChildRemoved(p0: DataSnapshot) {
                 }
@@ -113,6 +95,18 @@ class GroupChatFragment : Fragment() {
     fun scrollToBottom(){
         rv_chat.post {
             rv_chat.smoothScrollToPosition(chatRecyclerView1.adapter?.itemCount?:0)
+        }
+    }
+
+    companion object{
+        const val KEY_CHAT_GROUP = "KEY_CHAT_GROUP"
+
+        fun create(chatGroup:ChatGroup):GroupChatFragment{
+            return GroupChatFragment().apply {
+                arguments = Bundle().also {
+                    it.putParcelable(KEY_CHAT_GROUP,chatGroup)
+                }
+            }
         }
     }
 

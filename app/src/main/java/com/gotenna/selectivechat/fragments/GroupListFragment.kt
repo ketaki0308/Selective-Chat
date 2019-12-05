@@ -14,6 +14,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.gotenna.selectivechat.MainActivity
 import com.gotenna.selectivechat.model.ChatGroup
 import com.gotenna.selectivechat.model.Member
 
@@ -25,7 +26,6 @@ import com.gotenna.selectivechat.model.Member
 class GroupListFragment : Fragment() {
 
     lateinit var rv_chat: RecyclerView
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +42,13 @@ class GroupListFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         rv_chat.apply {
             layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-            adapter = GroupListAdapter()
+            adapter = GroupListAdapter().apply {
+                setOnItemClickListener { position, chatGroup ->
+                    (activity as? MainActivity)?.let {
+                        it.launchFragment(GroupChatFragment.create(chatGroup),true)
+                    }
+                }
+            }
         }
         FirebaseDatabase.getInstance().reference.addChildEventListener(object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {

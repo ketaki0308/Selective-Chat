@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gotenna.selectivechat.R
 import com.gotenna.selectivechat.model.Message
+import com.gotenna.selectivechat.userName
 
 /**
  * Created on 12/04/2019 Wed
@@ -15,8 +16,7 @@ import com.gotenna.selectivechat.model.Message
  */
 class ChatAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    //TODO: fetch name from memory
-    private val userName:String = "Chuliang"
+//    private val userName:String? = com.gotenna.selectivechat.userName
     private val messageList= mutableListOf<Message>()
 
     private val TYPE_OTHERS = 0

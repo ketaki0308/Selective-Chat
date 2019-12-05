@@ -12,7 +12,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.gotenna.selectivechat.fragments.GroupChatFragment
 import com.gotenna.selectivechat.fragments.GroupListFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 
@@ -83,10 +82,11 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener {
             with(sharedPref.edit()) {
                 putString("user", userMutableList[p2])
                 commit()
+                userName = userMutableList[p2]
             }
 
             (activity as? MainActivity)?.run {
-                launchFragment(GroupListFragment())
+                launchFragment(GroupListFragment(),false)
             }
         }
     }

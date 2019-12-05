@@ -19,11 +19,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(getPreferences(Context.MODE_PRIVATE).getString("user","").isNullOrEmpty()) {
-            launchFragment(LoginFragment())
-        }  else {
-            launchFragment(GroupListFragment())
+        getPreferences(Context.MODE_PRIVATE).getString("user","").let {
+            if(it.isNullOrEmpty()) {
+                launchFragment(LoginFragment(),false)
+            }  else {
+                userName = it
+                launchFragment(GroupListFragment(),false)
+            }
         }
+
         setUpFirebase()
     }
 
@@ -58,9 +62,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun launchFragment(fragment:Fragment){
+    fun launchFragment(fragment:Fragment,addToBackStack:Boolean){
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayout, fragment)
+            if (addToBackStack){
+                replace(R.id.frameLayout, fragment).addToBackStack(null)
+            }else{
+                replace(R.id.frameLayout, fragment)
+            }
             commit()
         }
     }

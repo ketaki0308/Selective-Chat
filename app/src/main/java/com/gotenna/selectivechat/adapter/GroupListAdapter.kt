@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gotenna.selectivechat.R
 import com.gotenna.selectivechat.model.ChatGroup
-import com.gotenna.selectivechat.model.Group
 
 class GroupListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -15,6 +14,8 @@ class GroupListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val TYPE_OTHERS = 0
     private val TYPE_SELF = 1
+
+    private var onItemClickFun:((Int,ChatGroup)->Unit)?=null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return GroupListViewHolder(
@@ -34,10 +35,12 @@ class GroupListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (holder is GroupListViewHolder) {
             holder.apply {
                 tv_message.text = groupList[position].name
-//                tv_sender.text = groupList[position].members.
                 tv_sender.text = groupList[position].members?.joinToString(separator = ",",transform = {
                     it.name as CharSequence
                 })
+                onItemClickFun?.let {
+                    setOnClickListener(it,position,groupList[position])
+                }
             }
         }
     }
@@ -45,6 +48,10 @@ class GroupListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun addNewGroup(chatGroup: ChatGroup){
         groupList.add(chatGroup)
         notifyItemInserted(groupList.size-1)
+    }
+
+    fun setOnItemClickListener(onItemClickFun: (Int, ChatGroup) -> Unit){
+        this.onItemClickFun = onItemClickFun
     }
 }
 
@@ -56,6 +63,12 @@ class GroupListViewHolder(val chatView: View) : RecyclerView.ViewHolder(chatView
         chatView.apply {
             tv_message = findViewById(R.id.tv_group_name1)
             tv_sender = findViewById(R.id.tv_member_name1)
+        }
+    }
+
+    fun setOnClickListener(onItemClickFun:((Int,ChatGroup)->Unit)?=null,position: Int,chatGroup: ChatGroup){
+        chatView.setOnClickListener {
+            onItemClickFun?.invoke(position,chatGroup)
         }
     }
 }
