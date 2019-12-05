@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import com.gotenna.selectivechat.R
 import com.gotenna.selectivechat.adapter.ChatAdapter
+import com.gotenna.selectivechat.model.Member
 import com.gotenna.selectivechat.model.Message
 import kotlinx.android.synthetic.main.chat_fragment.*
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,14 +44,46 @@ class GroupChatFragment : Fragment() {
             adapter = ChatAdapter()
         }
         tv_group_name.text = "Hack_day"
-        FirebaseDatabase.getInstance().reference.child("Hack_day").addListenerForSingleValueEvent(object : ValueEventListener {
+        var membersBuilder = StringBuilder()
+        FirebaseDatabase.getInstance().reference.child("Hack_day").child("members").addChildEventListener(object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
 
-            override fun onDataChange(p0: DataSnapshot) {
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+            }
 
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+            }
+
+            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                    val member = p0.getValue(Member::class.java)
+                member?.name?.let {
+                    membersBuilder.append("${it},")
+                    tv_member_name.text = membersBuilder.substring(0,membersBuilder.length-1).toString()
+                }
+            }
+
+            override fun onChildRemoved(p0: DataSnapshot) {
             }
         })
+
+//        FirebaseDatabase.getInstance().reference.child("Hack_day").child("members").addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onCancelled(p0: DatabaseError) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onDataChange(p0: DataSnapshot) {
+//                for (postSnapshot in p0.children) {
+//                    val member = p0.getValue(Member::class.java)
+//                    member?.name?.let {
+//                        membersBuilder.append("$it,")
+//                    }
+//                    membersBuilder.substring(0,membersBuilder.length-1)
+//                    tv_member_name.text = membersBuilder.toString()
+//                }
+//            }
+//        })
+
         FirebaseDatabase.getInstance().reference.child("Hack_day").child("messages").let {datebase->
             datebase.addChildEventListener(object : ChildEventListener {
                 override fun onCancelled(p0: DatabaseError) {
