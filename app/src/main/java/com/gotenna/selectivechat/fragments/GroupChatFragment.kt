@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import com.gotenna.selectivechat.R
 import com.gotenna.selectivechat.adapter.ChatAdapter
+import com.gotenna.selectivechat.model.ChatGroup
 import com.gotenna.selectivechat.model.Member
 import com.gotenna.selectivechat.model.Message
 import kotlinx.android.synthetic.main.chat_fragment.*
@@ -45,6 +46,7 @@ class GroupChatFragment : Fragment() {
         }
         tv_group_name.text = "Hack Day Demo"
         var membersBuilder = StringBuilder()
+        val chatGroupList = mutableListOf<ChatGroup>()
         FirebaseDatabase.getInstance().reference.child("Hack_day").child("members").addChildEventListener(object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
@@ -101,6 +103,32 @@ class GroupChatFragment : Fragment() {
                 scrollToBottom()
             }
         }
+
+        FirebaseDatabase.getInstance().reference.addChildEventListener(object : ChildEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+            }
+
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+            }
+
+            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                val chatGroup =ChatGroup()
+                val memberList = mutableListOf<Member>()
+                chatGroup.name = p0.key
+                chatGroup.members = memberList
+                for(member in p0.child("members").children){
+                    member.getValue(Member::class.java)?.let {
+                        memberList.add(it)
+                    }
+                }
+            }
+
+            override fun onChildRemoved(p0: DataSnapshot) {
+            }
+        })
     }
 
     override fun onResume() {
