@@ -61,6 +61,7 @@ class GroupListFragment : Fragment() {
                 chatGroup.members = memberList
                 for(member in p0.child("members").children){
                     member.getValue(Member::class.java)?.let {
+                        it.name = it.name + " "
                         memberList.add(it)
                     }
                 }
