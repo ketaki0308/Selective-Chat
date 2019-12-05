@@ -67,23 +67,6 @@ class GroupChatFragment : Fragment() {
             }
         })
 
-//        FirebaseDatabase.getInstance().reference.child("Hack_day").child("members").addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onCancelled(p0: DatabaseError) {
-//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//            }
-//
-//            override fun onDataChange(p0: DataSnapshot) {
-//                for (postSnapshot in p0.children) {
-//                    val member = p0.getValue(Member::class.java)
-//                    member?.name?.let {
-//                        membersBuilder.append("$it,")
-//                    }
-//                    membersBuilder.substring(0,membersBuilder.length-1)
-//                    tv_member_name.text = membersBuilder.toString()
-//                }
-//            }
-//        })
-
         FirebaseDatabase.getInstance().reference.child("Hack_day").child("messages").let {datebase->
             datebase.addChildEventListener(object : ChildEventListener {
                 override fun onCancelled(p0: DatabaseError) {
@@ -96,16 +79,13 @@ class GroupChatFragment : Fragment() {
                 }
 
                 override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                    Log.e("onChildAdded","")
                     val message =  p0.getValue(Message::class.java)
                     (rv_chat.adapter as? ChatAdapter?)?.let{chatAdapter ->
                         message?.let {message->
                             chatAdapter.addNewMessage(message)
                         }
                     }
-                    rv_chat.post {
-                        chatRecyclerView1.smoothScrollToPosition(chatRecyclerView1.adapter?.itemCount?:0)
-                    }
+                    scrollToBottom()
                 }
                 override fun onChildRemoved(p0: DataSnapshot) {
                 }
@@ -117,11 +97,20 @@ class GroupChatFragment : Fragment() {
                     sender = "Chuliang"
                     timeStamp = SimpleDateFormat("yyyy/MM/dd HH.mm.ss").format(Date())
                 })
-                et_message.setText("")
-                rv_chat.post {
-                    rv_chat.smoothScrollToPosition(chatRecyclerView1.adapter?.itemCount?:0)
-                }
+                et_message.text.clear()
+                scrollToBottom()
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        scrollToBottom()
+    }
+
+    fun scrollToBottom(){
+        rv_chat.post {
+            rv_chat.smoothScrollToPosition(chatRecyclerView1.adapter?.itemCount?:0)
         }
     }
 

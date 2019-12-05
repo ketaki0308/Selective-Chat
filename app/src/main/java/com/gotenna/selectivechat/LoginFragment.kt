@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.gotenna.selectivechat.fragments.GroupChatFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -30,13 +31,14 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_login, container, false)
+    }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         setUI()
-
     }
 
     private fun setUI() {
-
         val adapter = ArrayAdapter(
             activity!!,
             android.R.layout.simple_spinner_item, getUserList()
@@ -75,13 +77,17 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        val sharedPref = activity!!.getPreferences(Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            putString("user", userMutableList[p2])
-            commit()
-        }
+        if (p2 > 0){
+            val sharedPref = activity!!.getPreferences(Context.MODE_PRIVATE)
+            with(sharedPref.edit()) {
+                putString("user", userMutableList[p2])
+                commit()
+            }
 
-        //go to your chat fragment
+            (activity as? MainActivity)?.run {
+                launchFragment(GroupChatFragment())
+            }
+        }
     }
 
     override fun onDestroy() {
