@@ -43,7 +43,7 @@ class GroupChatFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity,RecyclerView.VERTICAL,false)
             adapter = ChatAdapter()
         }
-        tv_group_name.text = "Hack_day"
+        tv_group_name.text = "Hack Day Demo"
         var membersBuilder = StringBuilder()
         FirebaseDatabase.getInstance().reference.child("Hack_day").child("members").addChildEventListener(object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {
