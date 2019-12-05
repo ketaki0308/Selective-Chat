@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.gotenna.selectivechat.fragments.GroupChatFragment
+import com.gotenna.selectivechat.fragments.GroupListFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -85,7 +86,7 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
 
             (activity as? MainActivity)?.run {
-                launchFragment(GroupChatFragment())
+                launchFragment(GroupListFragment())
             }
         }
     }

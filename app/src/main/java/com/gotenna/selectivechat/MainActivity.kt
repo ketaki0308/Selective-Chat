@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.gotenna.selectivechat.fragments.GroupChatFragment
+import com.gotenna.selectivechat.fragments.GroupListFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         if(getPreferences(Context.MODE_PRIVATE).getString("user","").isNullOrEmpty()) {
             launchFragment(LoginFragment())
         }  else {
-            launchFragment(GroupChatFragment())
+            launchFragment(GroupListFragment())
         }
         setUpFirebase()
     }
