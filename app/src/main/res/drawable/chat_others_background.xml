@@ -3,7 +3,7 @@
     android:shape="rectangle" >
 
     <!-- view background color -->
-    <solid android:color="#33FF57" >
+    <solid android:color="#F5F5F5" >
     </solid>
 
     <!-- If you want to add some padding -->

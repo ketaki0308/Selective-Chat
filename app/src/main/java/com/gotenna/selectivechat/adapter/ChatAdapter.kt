@@ -38,15 +38,30 @@ class ChatAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (holder is OthersChatViewHolder){
             holder.apply {
                 tv_message.text = messageList[position].text
-                tv_sender.text = messageList[position].sender
+                if (position == messageList.size-1){
+                    tv_sender.visibility = View.VISIBLE
+                    tv_sender.text = messageList[position].sender
+                }else if(messageList[position+1].sender.equals(messageList[position].sender)){
+                    tv_sender.visibility = View.GONE
+                }else{
+                    tv_sender.visibility = View.VISIBLE
+                    tv_sender.text = messageList[position].sender
+                }
             }
         }else if(holder is SelfChatViewHolder){
             holder.apply {
                 tv_message.text = messageList[position].text
-                tv_sender.text = "Me"
+                if (position == messageList.size-1){
+                    tv_sender.visibility = View.VISIBLE
+                    tv_sender.text = "Me"
+                }else if(messageList[position+1].sender.equals(messageList[position].sender)){
+                    tv_sender.visibility = View.GONE
+                }else{
+                    tv_sender.visibility = View.VISIBLE
+                    tv_sender.text = "Me"
+                }
             }
         }
-
     }
 
     override fun getItemViewType(position: Int): Int {
