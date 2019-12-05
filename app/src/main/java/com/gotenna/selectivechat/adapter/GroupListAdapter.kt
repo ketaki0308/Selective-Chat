@@ -6,13 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gotenna.selectivechat.R
+import com.gotenna.selectivechat.model.ChatGroup
 import com.gotenna.selectivechat.model.Group
 
 class GroupListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    //TODO: fetch name from memory
-    val userName: String = "Chuliang"
-    private val groupList = mutableListOf<Group>()
+    private val groupList = mutableListOf<ChatGroup>()
 
     private val TYPE_OTHERS = 0
     private val TYPE_SELF = 1
@@ -35,9 +34,17 @@ class GroupListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (holder is GroupListViewHolder) {
             holder.apply {
                 tv_message.text = groupList[position].name
-                tv_sender.text = groupList[position].members
+//                tv_sender.text = groupList[position].members.
+                tv_sender.text = groupList[position].members?.joinToString(separator = ",",transform = {
+                    it.name as CharSequence
+                })
             }
         }
+    }
+
+    fun addNewGroup(chatGroup: ChatGroup){
+        groupList.add(chatGroup)
+        notifyItemInserted(groupList.size-1)
     }
 }
 
@@ -47,8 +54,8 @@ class GroupListViewHolder(val chatView: View) : RecyclerView.ViewHolder(chatView
 
     init {
         chatView.apply {
-            tv_message = findViewById(R.id.tv_group_name)
-            tv_sender = findViewById(R.id.tv_member_name)
+            tv_message = findViewById(R.id.tv_group_name1)
+            tv_sender = findViewById(R.id.tv_member_name1)
         }
     }
 }

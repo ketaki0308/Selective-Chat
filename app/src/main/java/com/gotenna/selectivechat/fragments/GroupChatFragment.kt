@@ -97,38 +97,12 @@ class GroupChatFragment : Fragment() {
                 datebase.child(System.currentTimeMillis().toString()).setValue(Message().apply {
                     text = et_message.text.toString()
                     sender = "Chuliang"
-                    timeStamp = SimpleDateFormat("yyyy/MM/dd HH.mm.ss").format(Date())
+                    timeStamp = System.currentTimeMillis().toString()
                 })
                 et_message.text.clear()
                 scrollToBottom()
             }
         }
-
-        FirebaseDatabase.getInstance().reference.addChildEventListener(object : ChildEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
-
-            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-            }
-
-            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-            }
-
-            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                val chatGroup =ChatGroup()
-                val memberList = mutableListOf<Member>()
-                chatGroup.name = p0.key
-                chatGroup.members = memberList
-                for(member in p0.child("members").children){
-                    member.getValue(Member::class.java)?.let {
-                        memberList.add(it)
-                    }
-                }
-            }
-
-            override fun onChildRemoved(p0: DataSnapshot) {
-            }
-        })
     }
 
     override fun onResume() {

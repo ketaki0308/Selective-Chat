@@ -14,6 +14,8 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.gotenna.selectivechat.model.ChatGroup
+import com.gotenna.selectivechat.model.Member
 
 /**
  * Created on 12/05/2019 Thu
@@ -53,7 +55,18 @@ class GroupListFragment : Fragment() {
             }
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                p0
+                val chatGroup = ChatGroup()
+                val memberList = mutableListOf<Member>()
+                chatGroup.name = p0.key
+                chatGroup.members = memberList
+                for(member in p0.child("members").children){
+                    member.getValue(Member::class.java)?.let {
+                        memberList.add(it)
+                    }
+                }
+                (rv_chat.adapter as? GroupListAdapter)?.let {
+                    it.addNewGroup(chatGroup)
+                }
             }
 
             override fun onChildRemoved(p0: DataSnapshot) {
